@@ -11,18 +11,17 @@ type EventModel struct {
 }
 
 type Event struct {
-	Id int `json:"id"`
-	OwnerId int `json:"ownerId" binding:"required"`
-	Name string `json:"name" binding:"required, min=3,"`
-	Description string `json:"description" binding:"required, min=10,"`
-	Date string `json:"date" binding:"required, datetime=2006-01-02,"`
-	Location string `json:"location" binding:"required, min=3,"`
+	Id          int    `json:"id"`
+	OwnerId     int    `json:"ownerId" binding:"required"`
+	Name        string `json:"name" binding:"required,min=3"`
+	Description string `json:"description" binding:"required,min=10"`
+	Date        string `json:"date" binding:"required,datetime=2006-01-02"`
+	Location    string `json:"location" binding:"required,min=3"`
 }
-
 
 func (m *EventModel) Insert(event *Event) error {
 
-	ctx , cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	query := `INSERT INTO events (owner_id, name, description, date, location) VALUES ($1, $2, $3, $4, $5) RETURNING id`
@@ -76,9 +75,9 @@ func (m *EventModel) Update(event *Event) error {
 	defer cancel()
 	query := `UPDATE events SET owner_id = $1, name = $2, description = $3, date = $4, location = $5 WHERE id = $6`
 	_, err := m.DB.ExecContext(ctx, query, event.OwnerId, event.Name, event.Description, event.Date, event.Location, event.Id)
-	if err!= nil{
+	if err != nil {
 		return err
-	}	
+	}
 	return nil
 }
 
@@ -91,4 +90,4 @@ func (m *EventModel) Delete(id int) error {
 		return err
 	}
 	return nil
-}	
+}
