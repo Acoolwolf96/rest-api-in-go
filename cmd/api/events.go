@@ -56,6 +56,15 @@ func (app *application) getEvent(c *gin.Context){
 
 
 //get all events
+//
+// @Summary Get all events
+// @Description Get a list of all events
+// @Tags Events
+// @Accept json
+// @Produce json
+// @Success 200 {array} database.Event
+// @Failure 500 {object} map[string]string
+// @Router /api/v1/events [get]
 func (app *application) getAllEvents(c *gin.Context) {
 	events, err := app.models.Events.GetAll()
 
