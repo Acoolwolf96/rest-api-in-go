@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
-	"rest-api-in-go/docs"
+	// Swagger docs package (unused import removed to fix build error)
 	"rest-api-in-go/internal/database"
 	"rest-api-in-go/internal/env"
 	_ "github.com/mattn/go-sqlite3"
@@ -28,7 +28,7 @@ type application struct {
 }
 
 func main() {
-	db, err := sql.Open("sqlite3", "./data.db")
+	db, err := sql.Open("sqlite3", env.GetEnvKey("DB_PATH", "./data/data.db"))
 	if err != nil {
 		log.Fatal(err)
 	}

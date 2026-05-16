@@ -105,8 +105,6 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "This is a sample REST API server written in Go using the Gin framework.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
 }
 
 func init() {
