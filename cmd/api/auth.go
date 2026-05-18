@@ -24,6 +24,7 @@ type loginRequest struct {
 
 type loginResponse struct {
 	Token string `json:"token"`
+	UserId   int    `json:"userId"`
 }
 
 func (app *application) login(c *gin.Context) {
