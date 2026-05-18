@@ -3,14 +3,12 @@ package main
 import (
 	"database/sql"
 	"log"
-	// Swagger docs package (unused import removed to fix build error)
 	"rest-api-in-go/internal/database"
 	"rest-api-in-go/internal/env"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 
 	_ "github.com/joho/godotenv/autoload"
 )
-
 
 // @title REST API in Go
 // @version 1.0
@@ -20,27 +18,30 @@ import (
 // @Name Authorization
 // @description Type "Bearer" followed by a space and then your JWT token.
 
-
 type application struct {
-	port int
+	port      int
 	jwtSecret string
-	models database.Models
+	models    database.Models
 }
 
 func main() {
-	db, err := sql.Open("sqlite3", env.GetEnvKey("DB_PATH", "./data/data.db"))
+	db, err := sql.Open("postgres", env.GetEnvKey("DATABASE_URL", ""))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer db.Close()
 
+	if err := db.Ping(); err != nil {
+		log.Fatal("Could not connect to database:", err)
+	}
+
 	models := database.NewModels(db)
 
 	app := &application{
-		port: env.GetEnvInt("PORT", 4000),
+		port:      env.GetEnvInt("PORT", 4000),
 		jwtSecret: env.GetEnvKey("JWT_SECRET", "defaultsecret"),
-		models: models,
+		models:    models,
 	}
 
 	if err := app.serve(); err != nil {
